@@ -1,0 +1,9 @@
+type Expense {
+  text: String
+  value: Float
+  paid: Boolean
+}
+
+type Query {
+  allExpenses: [Expense!]!
+}
