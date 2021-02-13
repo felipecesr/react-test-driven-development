@@ -1,25 +1,16 @@
-import ReactDOM from 'react-dom'
+import { render, screen } from '@testing-library/react'
 import Expense from '../index'
-
-function render(component) {
-  const container = document.createElement('div')
-  ReactDOM.render(component, container)
-
-  return {
-    container
-  }
-}
 
 describe('Expense', () => {
   it('renders the description', () => {
     const description = 'Netflix'
-    const { container } = render(<Expense description={description} />)
-    expect(container.textContent).toBe('Netflix')
+    render(<Expense description={description} />)
+    expect(screen.getByText(/netflix/i)).toBeInTheDocument()
   })
 
   it('renders another description', () => {
     const description = 'Spotify'
-    const { container } = render(<Expense description={description} />)
-    expect(container.textContent).toBe('Spotify')
+    render(<Expense description={description} />)
+    expect(screen.getByText(/spotify/i)).toBeInTheDocument()
   })
 })
