@@ -10,11 +10,16 @@ describe('Expense', () => {
     }
 
     render(<Expense {...props} />)
+
     expect(
       screen.getByRole('heading', { name: /netflix/i })
     ).toBeInTheDocument()
     expect(screen.getByText('R$ 15,90')).toBeInTheDocument()
     expect(screen.getByText(/a pagar/i)).toBeInTheDocument()
+    expect(screen.getByText(/a pagar/i)).toHaveStyleRule(
+      'background-color',
+      '#f44336'
+    )
   })
 
   it('renders another correct values', () => {
@@ -25,10 +30,15 @@ describe('Expense', () => {
     }
 
     render(<Expense {...props} />)
+
     expect(
       screen.getByRole('heading', { name: /spotify/i })
     ).toBeInTheDocument()
     expect(screen.getByText('R$ 12,90')).toBeInTheDocument()
     expect(screen.getByText(/pago/i)).toBeInTheDocument()
+    expect(screen.getByText(/pago/i)).toHaveStyleRule(
+      'background-color',
+      '#4caf50'
+    )
   })
 })
