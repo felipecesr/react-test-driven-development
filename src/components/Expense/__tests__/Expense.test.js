@@ -10,7 +10,9 @@ describe('Expense', () => {
     }
 
     render(<Expense {...props} />)
-    expect(screen.getByText(/netflix/i)).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /netflix/i })
+    ).toBeInTheDocument()
     expect(screen.getByText('R$ 15,90')).toBeInTheDocument()
     expect(screen.getByText(/a pagar/i)).toBeInTheDocument()
   })
@@ -23,7 +25,9 @@ describe('Expense', () => {
     }
 
     render(<Expense {...props} />)
-    expect(screen.getByText(/spotify/i)).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /spotify/i })
+    ).toBeInTheDocument()
     expect(screen.getByText('R$ 12,90')).toBeInTheDocument()
     expect(screen.getByText(/pago/i)).toBeInTheDocument()
   })
