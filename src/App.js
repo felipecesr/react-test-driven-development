@@ -4,7 +4,7 @@ function App() {
   return (
     <div>
       <h1>Expenses</h1>
-      <Expense description="Spotify" />
+      <Expense title="Spotify" />
     </div>
   )
 }

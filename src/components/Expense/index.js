@@ -1,6 +1,6 @@
-const Expense = ({ description, value, paid }) => (
+const Expense = ({ title, value, paid }) => (
   <div>
-    <div>{description}</div>
+    <div>{title}</div>
     <div>R$ {value}</div>
     <div>{paid ? 'Pago' : 'A Pagar'}</div>
   </div>

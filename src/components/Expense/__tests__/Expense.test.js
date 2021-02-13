@@ -4,7 +4,7 @@ import Expense from '../index'
 describe('Expense', () => {
   it('renders the correct values', () => {
     const props = {
-      description: 'Netflix',
+      title: 'Netflix',
       value: '15,90',
       paid: false
     }
@@ -17,7 +17,7 @@ describe('Expense', () => {
 
   it('renders another correct values', () => {
     const props = {
-      description: 'Spotify',
+      title: 'Spotify',
       value: '12,90',
       paid: true
     }
