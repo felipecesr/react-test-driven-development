@@ -1,5 +1,11 @@
 import { render, screen } from '@testing-library/react'
+import { ThemeProvider } from 'styled-components'
+import theme from 'styles/theme'
 import Expense from '../index'
+
+function renderWithTheme(ui) {
+  return render(<ThemeProvider theme={theme}>{ui}</ThemeProvider>)
+}
 
 describe('Expense', () => {
   it('renders the correct values', () => {
@@ -9,7 +15,7 @@ describe('Expense', () => {
       paid: false
     }
 
-    render(<Expense {...props} />)
+    renderWithTheme(<Expense {...props} />)
 
     expect(
       screen.getByRole('heading', { name: /netflix/i })
@@ -29,7 +35,7 @@ describe('Expense', () => {
       paid: true
     }
 
-    render(<Expense {...props} />)
+    renderWithTheme(<Expense {...props} />)
 
     expect(
       screen.getByRole('heading', { name: /spotify/i })

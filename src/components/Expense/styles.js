@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const Wrapper = styled.div`
   background-color: #fff;
@@ -25,10 +25,12 @@ export const Value = styled.div`
 `
 
 export const Paid = styled.div`
-  background-color: ${({ paid }) => (paid ? '#4caf50' : '#f44336')};
-  border-radius: 50px;
-  color: #fff;
-  font-size: 0.8em;
-  font-weight: 700;
-  padding: 0.2em 1em 0.4em;
+  ${({ theme, paid }) => css`
+    background-color: ${paid ? theme.green : theme.red};
+    border-radius: 50px;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 0.2em 1em 0.4em;
+  `}
 `
