@@ -14,3 +14,4 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 
 - Desenvolvendo o componente ListItem
 - Refatorando os testes
+- React Testing Library
