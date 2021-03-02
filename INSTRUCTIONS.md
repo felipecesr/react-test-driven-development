@@ -1,68 +1,76 @@
-# React Testing Library
+# Dublês de Teste
 
-React Testing Library é uma lib para testar componentes React de uma forma semelhante a forma que os usuários interagem com ele.
+Dublê de teste é um objeto que atua no lugar de outro objeto, eles podem ser vistos com vários nomes: spies, stubs, mocks, dummies e fakes. Normalmente usamos os dois primeiros.
 
-No arquivo `__tests__/ListItem.test.js`, vamos apagar a função `render` que criamos e importar da React Testing Library.
+Para não confundir, vou chamar apenas de mock.
 
-```javascript
-import { render } from '@testing-library/react'
-```
-
-O funcionamento é semelhante ao `render` que implementamos, a diferença é que não precisamos da função `cleanup`.
+Vamos adicionar mais um teste em `__tests__/ListItem.test.js`.
 
 ```javascript
-test('renders a text, paid status and value', () => {
-  render(<ListItem name='netflix' label='Netflix' value={45.9} />)
-  expect(document.body.querySelector('label').textContent).toContain('Netflix')
-  expect(document.body.querySelector('input').checked).toBe(false)
-  expect(document.body.querySelector('span').textContent).toBe('R$ 45,90')
+test('calls the onChange function when checkbox is clicked', () => {
+  render(<ListItem name='amazon' label='Amazon Prime' value={9.9} />)
 })
 ```
 
-Além disso, a partir de agora vamos passar a utilizar as queries da Testing Library ao invés do `querySelector`. O objeto `screen` da acesso a todas as queries.
+Como o próprio título do teste diz, nó queremos saber se a função `onChange` é chamada quando o usuário clica no checkbox.
+
+Para isso vamos utilizar uma função mock do Jest e passar como prop para o componente.
+
+> Funções mock ou Spies, permite espionar o comportamento de uma função em diferentes situações.
 
 ```javascript
-import { render, screen } from '@testing-library/react'
+const onChangeMock = jest.fn()
+render(
+  <ListItem
+    name='amazon'
+    label='Amazon Prime'
+    value={9.9}
+    onChange={onChangeMock}
+  />
+)
 ```
 
-Agora podemos verificar se o checkbox não está marcado, pesquisando ele pela label, exatamente como um usuário ou um leitor de tela faria.
+Feito isso, vamos clicar no checkbox, para isso precisamos importar o `fireEvent` da Testing Library.
 
 ```javascript
-expect(screen.getByLabelText(/netflix/i).checked).toBe(false)
+import { render, screen, fireEvent } from '@testing-library/react'
 ```
 
-Podemos pesquisar o valor diretamente pelo texto, e checar se ele está no documento com o `toBeInTheDocument`.
+Ele vai nos permitir simular eventos, agora podemos clicar no checkbox e verificar se a função foi chamada.
 
 ```javascript
-expect(screen.getByText(/r\$ 45,90/i)).toBeInTheDocument()
-```
+test('calls the onChange function when checkbox is clicked', () => {
+  const onChangeMock = jest.fn()
+  render(
+    <ListItem
+      name='amazon'
+      label='Amazon Prime'
+      value={9.9}
+      onChange={onChangeMock}
+    />
+  )
 
-> O toBeInTheDocument faz parte da @testing-library/jest-dom, precisamos instlar essa lib para poder usá-lo. Como estamos usando Create React App, não precisamos fazer isso.
+  const inputElement = screen.getByLabelText(/amazon prime/i)
+  fireEvent.click(inputElement)
 
-Podemos deixar ainda melhor utilizando o `toBeChecked`.
-
-```javascript
-expect(screen.getByLabelText(/spotify/i)).toBeChecked()
-```
-
-E no primeiro teste, que o checkbox não está marcado podemos utilizar o `not` antes.
-
-```javascript
-expect(screen.getByLabelText(/netflix/i)).not.toBeChecked()
-```
-
-Por fim nossos testes devem estar assim:
-
-```javascript
-test('renders a text, paid status and value', () => {
-  render(<ListItem name='netflix' label='Netflix' value={45.9} />)
-  expect(screen.getByLabelText(/netflix/i)).not.toBeChecked()
-  expect(screen.getByText(/r\$ 45,90/i)).toBeInTheDocument()
+  expect(onChangeMock).toBeCalled()
 })
+```
 
-test('renders another test, paid status and value', () => {
-  render(<ListItem name='spotify' label='Spotify' value={16.9} isPaid />)
-  expect(screen.getByLabelText(/spotify/i)).toBeChecked()
-  expect(screen.getByText(/r\$ 16,90/i)).toBeInTheDocument()
-})
+Vamos fazer o teste passar.
+
+```javascript
+const ListItem = ({ name, label, value, isPaid, onChange }) => (
+  <li>
+    <input
+      type='checkbox'
+      id={name}
+      name={name}
+      checked={isPaid}
+      onChange={() => onChange()}
+    />
+    <label htmlFor={name}>{label}</label>
+    <span>R$ {formatReal(value)}</span>
+  </li>
+)
 ```
