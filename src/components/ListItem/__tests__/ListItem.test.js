@@ -1,23 +1,34 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import ReactDOM from 'react-dom'
 import ListItem from '../ListItem'
 
-test('renders a description and a checkbox unchecked', () => {
-  render(<ListItem id={1} description='Netflix' />)
-  expect(screen.getByLabelText(/netflix/i)).not.toBeChecked()
+test('renders a text, paid status and value', () => {
+  const component = <ListItem name='netflix' label='Netflix' value={45.9} />
+  const container = document.createElement('div')
+
+  ReactDOM.render(component, container)
+  document.body.appendChild(container)
+
+  expect(document.body.querySelector('label').textContent).toContain('Netflix')
+  expect(document.body.querySelector('input').checked).toBe(false)
+  expect(document.body.querySelector('span').textContent).toBe('R$ 45,90')
+
+  ReactDOM.unmountComponentAtNode(container)
+  document.body.removeChild(container)
 })
 
-test('renders another description and a checkbox checked', () => {
-  render(<ListItem id={2} description='Spotify' isChecked />)
-  expect(screen.getByLabelText(/spotify/i)).toBeChecked()
-})
-
-test('calls the onChange function when checkbox is clicked', () => {
-  const onChangeMock = jest.fn()
-  render(
-    <ListItem id={3} description='Mobills Premium' onChange={onChangeMock} />
+test('renders another text, paid status and value', () => {
+  const component = (
+    <ListItem name='spotify' label='Spotify' value={16.9} isPaid />
   )
+  const container = document.createElement('div')
 
-  fireEvent.click(screen.getByLabelText(/mobills premium/i))
+  ReactDOM.render(component, container)
+  document.body.appendChild(container)
 
-  expect(onChangeMock).toBeCalledWith({ id: 3 })
+  expect(document.body.querySelector('label').textContent).toContain('Spotify')
+  expect(document.body.querySelector('input').checked).toBe(true)
+  expect(document.body.querySelector('span').textContent).toBe('R$ 16,90')
+
+  ReactDOM.unmountComponentAtNode(container)
+  document.body.removeChild(container)
 })

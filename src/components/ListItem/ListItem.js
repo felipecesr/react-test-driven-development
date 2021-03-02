@@ -1,12 +1,10 @@
-const ListItem = ({ id, description, isChecked, onChange }) => (
+import { formatReal } from 'utils/format-real'
+
+const ListItem = ({ name, label, value, isPaid }) => (
   <li>
-    <input
-      type='checkbox'
-      id={`input-${id}`}
-      checked={isChecked}
-      onChange={() => onChange({ id })}
-    />
-    <label htmlFor={`input-${id}`}>{description}</label>
+    <input type='checkbox' id={name} name={name} checked={isPaid} readOnly />
+    <label htmlFor={name}>{label}</label>
+    <span>R$ {formatReal(value)}</span>
   </li>
 )
 
