@@ -16,3 +16,4 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Refatorando os testes
 - React Testing Library
 - Dublês de teste
+- Styled Components

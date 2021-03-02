@@ -1,76 +1,40 @@
-# Dublês de Teste
+# Styled Components
 
-Dublê de teste é um objeto que atua no lugar de outro objeto, eles podem ser vistos com vários nomes: spies, stubs, mocks, dummies e fakes. Normalmente usamos os dois primeiros.
+Vamos criar o arquivo `ListItem/styles.js`, criar os estilos do nosso componente e verificar se os testes continuam passando.
 
-Para não confundir, vou chamar apenas de mock.
-
-Vamos adicionar mais um teste em `__tests__/ListItem.test.js`.
+Agora só precisamos adicionar mais um teste, quando o checkbox estiver marcado, o texto deve ficar riscado. Para isso vamos adicionar mais um `expect` nos testes:
 
 ```javascript
-test('calls the onChange function when checkbox is clicked', () => {
-  render(<ListItem name='amazon' label='Amazon Prime' value={9.9} />)
+test('renders a text, paid status and value', () => {
+  ...
+  expect(screen.getByText(/netflix/i)).not.toHaveStyle({
+    textDecoration: 'line-through'
+  })
+})
+
+test('renders another test, paid status and value', () => {
+  ...
+  expect(screen.getByText(/spotify/i)).toHaveStyle({
+    textDecoration: 'line-through'
+  })
 })
 ```
 
-Como o próprio título do teste diz, nó queremos saber se a função `onChange` é chamada quando o usuário clica no checkbox.
-
-Para isso vamos utilizar uma função mock do Jest e passar como prop para o componente.
-
-> Funções mock ou Spies, permite espionar o comportamento de uma função em diferentes situações.
+Fazendo o teste passar.
 
 ```javascript
-const onChangeMock = jest.fn()
-render(
-  <ListItem
-    name='amazon'
-    label='Amazon Prime'
-    value={9.9}
-    onChange={onChangeMock}
-  />
-)
+export const Label = styled.label`
+  input:checked + & {
+    text-decoration: line-through;
+  }
+`
 ```
 
-Feito isso, vamos clicar no checkbox, para isso precisamos importar o `fireEvent` da Testing Library.
+Agora, com todos os testes passando, podemos adicionar o ListItem na aplicação (App.js) para ver como ficou no browser.
 
 ```javascript
-import { render, screen, fireEvent } from '@testing-library/react'
-```
-
-Ele vai nos permitir simular eventos, agora podemos clicar no checkbox e verificar se a função foi chamada.
-
-```javascript
-test('calls the onChange function when checkbox is clicked', () => {
-  const onChangeMock = jest.fn()
-  render(
-    <ListItem
-      name='amazon'
-      label='Amazon Prime'
-      value={9.9}
-      onChange={onChangeMock}
-    />
-  )
-
-  const inputElement = screen.getByLabelText(/amazon prime/i)
-  fireEvent.click(inputElement)
-
-  expect(onChangeMock).toBeCalled()
-})
-```
-
-Vamos fazer o teste passar.
-
-```javascript
-const ListItem = ({ name, label, value, isPaid, onChange }) => (
-  <li>
-    <input
-      type='checkbox'
-      id={name}
-      name={name}
-      checked={isPaid}
-      onChange={() => onChange()}
-    />
-    <label htmlFor={name}>{label}</label>
-    <span>R$ {formatReal(value)}</span>
-  </li>
-)
+<div>
+  <h1>My app</h1>
+  <ListItem name='netflix' label='Netflix' value={45.9} onChange={() => null} />
+</div>
 ```
