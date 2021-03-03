@@ -1,16 +1,26 @@
-import { render, screen } from '@testing-library/react'
+import { render as rtlRender, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
 import App from '../App'
 
+function render(ui, { route = '/', ...renderOptions } = {}) {
+  const history = createMemoryHistory({
+    initialEntries: [route]
+  })
+
+  function Wrapper({ children }) {
+    return <Router history={history}>{children}</Router>
+  }
+
+  return rtlRender(<Router history={history}>{ui}</Router>, {
+    wrapper: Wrapper,
+    ...renderOptions
+  })
+}
+
 test('app renders add new and go back and I can navigate to those pages', () => {
-  const history = createMemoryHistory({ initialEntries: ['/'] })
-  render(
-    <Router history={history}>
-      <App />
-    </Router>
-  )
+  render(<App />)
 
   expect(screen.getByRole('heading')).toHaveTextContent(/my list/i)
 
@@ -27,4 +37,9 @@ test('app renders add new and go back and I can navigate to those pages', () => 
   expect(
     screen.queryByRole('button', { name: /go back/i })
   ).not.toBeInTheDocument()
+})
+
+test('renders not found page for unknown urls', () => {
+  render(<App />, { route: '/something-not-found' })
+  expect(screen.getByRole('heading')).toHaveTextContent(/404/i)
 })

@@ -30,3 +30,4 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 ## Seção 4: React Router
 
 - Adicionando a navegação
+- Página 404
