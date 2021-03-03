@@ -1,8 +1,17 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { Redirect as MockRedirect } from 'react-router-dom'
 import Form from '../Form'
 
-test('renders a form with description, value, paid and a submit button', () => {
+jest.mock('react-router-dom', () => {
+  return {
+    Redirect: jest.fn()
+  }
+})
+
+test('renders a form with description, value, paid and a submit button', async () => {
   jest.spyOn(window, 'fetch')
+  window.fetch.mockResolvedValue()
+  MockRedirect.mockImplementation(() => null)
   render(<Form />)
 
   screen.getByLabelText(/description/i).value = 'Shirt'
@@ -22,4 +31,8 @@ test('renders a form with description, value, paid and a submit button', () => {
     })
   })
   expect(window.fetch).toHaveBeenCalledTimes(1)
+
+  await waitFor(() =>
+    expect(MockRedirect).toHaveBeenCalledWith({ to: '/' }, {})
+  )
 })

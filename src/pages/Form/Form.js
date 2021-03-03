@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 
 const Form = () => {
   const [isSaving, setIsSaving] = useState(false)
+  const [redirect, setRedirect] = useState(false)
 
   const handleSubmit = e => {
     e.preventDefault()
     setIsSaving(true)
 
     const { description, value, paid } = e.target.elements
-
     window
       .fetch('/api/save-expense', {
         method: 'POST',
@@ -18,7 +19,11 @@ const Form = () => {
           paid: paid.checked
         })
       })
-      .then(() => setIsSaving(false))
+      .then(() => setRedirect(true))
+  }
+
+  if (redirect) {
+    return <Redirect to='/' />
   }
 
   return (

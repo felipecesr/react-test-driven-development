@@ -1,69 +1,83 @@
-# Enviando dados para uma API
+# Redirecionando o usuário após o envio do formulário
 
-Chegou a hora de enviar os dados do formulário para uma API, só que não queremos fazer uma requisição, vamos usar mocks.
+Após enviar o formulário, o usuário deve ser redirecionado para a página inicial.
 
-Primeiro, vamos mockar o fetch
+Para fazer isso, vamos adicionar o `react-router-dom` no projeto.
 
-```javascript
-jest.spyOn(window, 'fetch')
-render(<Form />)
+```bash
+yarn add react-router-dom
 ```
 
-Agora precisamos preencher o formulário, com os dados que queremos enviar.
+No arquivo `src/pages/Form/__test__/Form.test.js` importe o componente Redirect.
 
 ```javascript
-screen.getByLabelText(/description/i).value = 'Shirt'
-screen.getByLabelText(/value/i).value = '59.9'
-screen.getByLabelText(/paid/i).checked = true
+import { Redirect as MockRedirect } from 'react-router-dom'
 ```
 
-Por fim, vamos fazer as asserções
+E precisamos mockar, agora utilizando o `jest.mock`, e adicionar `null` como valor de retorno (porque é um componente).
 
 ```javascript
-expect(window.fetch).toHaveBeenCalledWith('/api/save-expense', {
-  method: 'POST',
-  body: JSON.stringify({
-    text: 'Shirt',
-    value: '59.9',
-    paid: true
-  })
+jest.mock('react-router-dom', () => {
+  return {
+    Redirect: jest.fn()
+  }
 })
-expect(window.fetch).toHaveBeenCalledTimes(1)
+
+test('renders a form with description, value, paid and a submit button', () => {
+  jest.spyOn(window, 'fetch')
+  window.fetch.mockResolvedValue() // é necessário o fetch precisa ser uma Promisse
+  MockRedirect.mockImplementation(() => null)
+  render(<Form />)
+
+  ...
+
+  expect(MockRedirect).toHaveBeenCalledWith({to: '/'}, {}) // componentes são chamados com um segundo argumento
+  expect(MockRedirect).toHaveBeenCalledTimes(1)
 ```
 
 ## Fazendo o teste passar
 
-Para que o teste passe, primeiro precisamos adicionar o atributo `name` nos campos do formulário.
-
 ```javascript
-<label htmlFor='description-input'>Description</label>
-<input ... name='description' />
+const Form = () => {
+  const [isSaving, setIsSaving] = useState(false)
+  const [redirect, setRedirect] = useState(false)
 
-<label htmlFor='value-input'>Value</label>
-<input ... name='value' />
+  const handleSubmit = e => {
+    e.preventDefault()
 
-<label htmlFor='paid-input'>Paid</label>
-<input ... name='paid' />
+    ...
+
+    window
+      .fetch('/api/save-expense', {
+        ...
+      })
+      .then(() => setRedirect(true))
+  }
+
+  if (redirect) {
+    return <Redirect to='/' />
+  }
+
+  return ...
 ```
 
-E dentro do `handleSubmit`, chamamos o `fetch` com os dados do formulário.
+Após a requisição usamos o `setRedirect`, mesmo assim o teste está falhando.
+
+```bash
+Number of calls: 0
+```
+
+Isso acontece porque o `window.fetch` é assíncrono e só chamamos o `setRedirect` após a requisição.
+
+Além disso, precisamos dizer que o teste é assíncrono e utilizar o `waitFor` da Testing Library, .
 
 ```javascript
-const handleSubmit = e => {
-  e.preventDefault()
-  setIsSaving(true)
+test('renders a form with description, value, paid and a submit button', async () => {
+  jest.spyOn(window, 'fetch')
 
-  const { description, value, paid } = e.target.elements
+  ...
 
-  window
-    .fetch('/api/save-expense', {
-      method: 'POST',
-      body: JSON.stringify({
-        text: description.value,
-        value: value.value,
-        paid: paid.checked
-      })
-    })
-    .then(() => setIsSaving(false))
-}
+  await waitFor(() =>
+    expect(MockRedirect).toHaveBeenCalledWith({ to: '/' }, {})
+  )
 ```
