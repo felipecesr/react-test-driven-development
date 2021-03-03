@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Redirect as MockRedirect } from 'react-router-dom'
 import Form from '../Form'
 
@@ -14,12 +15,12 @@ test('renders a form with description, value, paid and a submit button', async (
   MockRedirect.mockImplementation(() => null)
   render(<Form />)
 
-  screen.getByLabelText(/description/i).value = 'Shirt'
-  screen.getByLabelText(/value/i).value = '59.9'
-  screen.getByLabelText(/paid/i).checked = true
+  userEvent.type(screen.getByLabelText(/description/i), 'Shirt')
+  userEvent.type(screen.getByLabelText(/value/i), '59.9')
+  userEvent.click(screen.getByLabelText(/paid/i))
   const buttonElement = screen.getByRole('button', { name: /submit/i })
 
-  fireEvent.click(buttonElement)
+  userEvent.click(buttonElement)
   expect(buttonElement).toBeDisabled()
 
   expect(window.fetch).toHaveBeenCalledWith('/api/save-expense', {

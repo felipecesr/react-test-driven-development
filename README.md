@@ -13,7 +13,7 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 ## Seção 2: Testes Unitários
 
 - Desenvolvendo o componente ListItem
-- Refatorando os testes (ListItem)
+- Refatorando os testes
 - React Testing Library
 - Dublês de teste
 - Styled Components
@@ -22,5 +22,5 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 
 - Desenvolvendo o componente Form
 - Enviando dados para uma API
-- Redirecionando o usuário após o envio do formulário
-- Refatorando os testes (Form)
+- Redirecionando após o envio do formulário
+- Melhorando os eventos do teste

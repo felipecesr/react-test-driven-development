@@ -1,83 +1,40 @@
-# Redirecionando o usuário após o envio do formulário
+# Melhorando os eventos do teste
 
-Após enviar o formulário, o usuário deve ser redirecionado para a página inicial.
+Com os testes passando, podemos refatorar os testes.
 
-Para fazer isso, vamos adicionar o `react-router-dom` no projeto.
-
-```bash
-yarn add react-router-dom
-```
-
-No arquivo `src/pages/Form/__test__/Form.test.js` importe o componente Redirect.
+Note que preenchemos os formulários atribuindo os valores.
 
 ```javascript
-import { Redirect as MockRedirect } from 'react-router-dom'
+screen.getByLabelText(/description/i).value = 'Shirt'
+screen.getByLabelText(/value/i).value = '59.9'
+screen.getByLabelText(/paid/i).checked = true
 ```
 
-E precisamos mockar, agora utilizando o `jest.mock`, e adicionar `null` como valor de retorno (porque é um componente).
+Na verdade, quando o usuário altera o valor de um campo, ele deve chamar o `onChange`, podemos fazer dessa forma.
 
 ```javascript
-jest.mock('react-router-dom', () => {
-  return {
-    Redirect: jest.fn()
-  }
+fireEvent.change(screen.getByLabelText(/description/i), {
+  target: { value: 'Shirt' }
 })
-
-test('renders a form with description, value, paid and a submit button', () => {
-  jest.spyOn(window, 'fetch')
-  window.fetch.mockResolvedValue() // é necessário o fetch precisa ser uma Promisse
-  MockRedirect.mockImplementation(() => null)
-  render(<Form />)
-
-  ...
-
-  expect(MockRedirect).toHaveBeenCalledWith({to: '/'}, {}) // componentes são chamados com um segundo argumento
-  expect(MockRedirect).toHaveBeenCalledTimes(1)
+fireEvent.change(screen.getByLabelText(/value/i), { target: { value: '59.9' } })
+fireEvent.click(screen.getByLabelText(/paid/i))
 ```
 
-## Fazendo o teste passar
+Ou ainda melhor, vamos importar o `userEvent`.
 
 ```javascript
-const Form = () => {
-  const [isSaving, setIsSaving] = useState(false)
-  const [redirect, setRedirect] = useState(false)
-
-  const handleSubmit = e => {
-    e.preventDefault()
-
-    ...
-
-    window
-      .fetch('/api/save-expense', {
-        ...
-      })
-      .then(() => setRedirect(true))
-  }
-
-  if (redirect) {
-    return <Redirect to='/' />
-  }
-
-  return ...
+import userEvent from '@testing-library/user-event'
 ```
 
-Após a requisição usamos o `setRedirect`, mesmo assim o teste está falhando.
-
-```bash
-Number of calls: 0
-```
-
-Isso acontece porque o `window.fetch` é assíncrono e só chamamos o `setRedirect` após a requisição.
-
-Além disso, precisamos dizer que o teste é assíncrono e utilizar o `waitFor` da Testing Library, .
+O `userEvent` permite disparar eventos da forma mais próxima possível do usuário.
 
 ```javascript
-test('renders a form with description, value, paid and a submit button', async () => {
-  jest.spyOn(window, 'fetch')
+userEvent.type(screen.getByLabelText(/description/i), 'Shirt')
+userEvent.type(screen.getByLabelText(/value/i), '59.9')
+userEvent.click(screen.getByLabelText(/paid/i))
+const buttonElement = screen.getByRole('button', { name: /submit/i })
 
-  ...
-
-  await waitFor(() =>
-    expect(MockRedirect).toHaveBeenCalledWith({ to: '/' }, {})
-  )
+userEvent.click(buttonElement)
 ```
+
+Note que dessa forma já dispensamos até alguns detalhes de implementação.
