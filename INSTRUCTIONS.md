@@ -17,10 +17,10 @@ test('renders not found page for unknown urls', () => {
 })
 ```
 
-Vamos criar o componente `NotFound`
+Vamos criar o componente `Error`
 
 ```javascript
-const NotFound = () => (
+const Error = () => (
   <div>
     <h2>404</h2>
     <p>Page not found</p>
@@ -33,7 +33,7 @@ E adicioná-lo no `App`
 ```javascript
 <Route exact path='/' component={Home} />
 <Route path='/new' component={Form} />
-<Route component={NotFound} />
+<Route component={Error} />
 ```
 
 Podemos refatorar os testes
