@@ -24,3 +24,4 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Enviando dados para uma API
 - Redirecionando após o envio do formulário
 - Melhorando os eventos do teste
+- Gerando dados aleatórios para os testes

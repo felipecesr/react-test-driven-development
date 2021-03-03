@@ -1,40 +1,53 @@
-# Melhorando os eventos do teste
+# Gerando dados aleatórios para os testes
 
-Com os testes passando, podemos refatorar os testes.
-
-Note que preenchemos os formulários atribuindo os valores.
-
-```javascript
-screen.getByLabelText(/description/i).value = 'Shirt'
-screen.getByLabelText(/value/i).value = '59.9'
-screen.getByLabelText(/paid/i).checked = true
-```
-
-Na verdade, quando o usuário altera o valor de um campo, ele deve chamar o `onChange`, podemos fazer dessa forma.
-
-```javascript
-fireEvent.change(screen.getByLabelText(/description/i), {
-  target: { value: 'Shirt' }
-})
-fireEvent.change(screen.getByLabelText(/value/i), { target: { value: '59.9' } })
-fireEvent.click(screen.getByLabelText(/paid/i))
-```
-
-Ou ainda melhor, vamos importar o `userEvent`.
-
-```javascript
-import userEvent from '@testing-library/user-event'
-```
-
-O `userEvent` permite disparar eventos da forma mais próxima possível do usuário.
+Note que estamos criando dados para os testes, não tem nenhum problema em fazer isso.
 
 ```javascript
 userEvent.type(screen.getByLabelText(/description/i), 'Shirt')
 userEvent.type(screen.getByLabelText(/value/i), '59.9')
 userEvent.click(screen.getByLabelText(/paid/i))
-const buttonElement = screen.getByRole('button', { name: /submit/i })
-
-userEvent.click(buttonElement)
 ```
 
-Note que dessa forma já dispensamos até alguns detalhes de implementação.
+Como são poucos dados é bem tranquilo, mas existem casos em que fazer isso pode ser bem chato, se forem muitos dados ou se você simplesmente não gosta de pensar nesses dados.
+
+No final isso nem importa, o que queremos é garantir que a aplicação esteja funcionando.
+
+Então o que vamos fazer aqui é gerar esses dados automaticamente com o `test-data-bot`.
+
+```bash
+yarn add test-data-bot --dev
+```
+
+```javascript
+import { build, fake } from 'test-data-bot'
+
+...
+
+const expenseBuilder = build('Expense').fields({
+  text: fake(f => f.lorem.word()),
+  value: fake(f => f.random.number()).toString()
+})
+
+test('renders a form with description, value, paid and a submit button', async () => {
+  jest.spyOn(window, 'fetch')
+  window.fetch.mockResolvedValue()
+  MockRedirect.mockImplementation(() => null)
+  const fakeExpense = expenseBuilder()
+  render(<Form />)
+
+  ...
+
+  userEvent.type(screen.getByLabelText(/description/i), fakeExpense.text)
+  userEvent.type(screen.getByLabelText(/value/i), fakeExpense.value)
+
+  ...
+
+  expect(window.fetch).toHaveBeenCalledWith('/api/save-expense', {
+    method: 'POST',
+    body: JSON.stringify({
+      text: fakeExpense.text,
+      value: fakeExpense.value,
+      paid: true
+    })
+  })
+```
