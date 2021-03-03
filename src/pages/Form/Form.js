@@ -34,9 +34,9 @@ const Form = () => {
         <FormItem label='Description' name='description' />
         <FormItem label='Value' name='value' />
         <FormItem label='Paid' name='paid' type='checkbox' />
-        <button type='submit' disabled={isSaving}>
+        <S.SubmitButton type='submit' disabled={isSaving}>
           Submit
-        </button>
+        </S.SubmitButton>
       </form>
     </S.Wrapper>
   )
