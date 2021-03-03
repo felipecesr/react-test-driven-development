@@ -1,16 +1,17 @@
-import ListItem from 'components/ListItem/ListItem'
+import { Switch, Route } from 'react-router-dom'
+import GlobalStyles from 'styles/global'
+import Home from 'pages/Home/Home'
+import Form from 'pages/Form/Form'
 
 function App() {
   return (
-    <div>
-      <h1>My app</h1>
-      <ListItem
-        name='netflix'
-        label='Netflix'
-        value={45.9}
-        onChange={() => null}
-      />
-    </div>
+    <>
+      <GlobalStyles />
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/new' component={Form} />
+      </Switch>
+    </>
   )
 }
 

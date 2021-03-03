@@ -26,3 +26,7 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Melhorando os eventos do teste
 - Gerando dados aleatórios para os testes
 - Refatorando os campos e adicionando estilos
+
+## Seção 4: React Router
+
+- Adicionando a navegação

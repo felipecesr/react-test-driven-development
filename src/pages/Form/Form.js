@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import Header from 'components/Header/Header'
 import FormItem from 'components/FormItem/FormItem'
 import * as S from './styles'
 
-const Form = () => {
+const Form = ({ history }) => {
   const [isSaving, setIsSaving] = useState(false)
   const [redirect, setRedirect] = useState(false)
 
@@ -29,16 +30,19 @@ const Form = () => {
   }
 
   return (
-    <S.Wrapper>
-      <form onSubmit={handleSubmit}>
-        <FormItem label='Description' name='description' />
-        <FormItem label='Value' name='value' />
-        <FormItem label='Paid' name='paid' type='checkbox' />
-        <S.SubmitButton type='submit' disabled={isSaving}>
-          Submit
-        </S.SubmitButton>
-      </form>
-    </S.Wrapper>
+    <>
+      <Header title='Add New' goBack={() => history.goBack()} />
+      <S.Wrapper>
+        <form onSubmit={handleSubmit}>
+          <FormItem label='Description' name='description' />
+          <FormItem label='Value' name='value' />
+          <FormItem label='Paid' name='paid' type='checkbox' />
+          <S.SubmitButton type='submit' disabled={isSaving}>
+            Submit
+          </S.SubmitButton>
+        </form>
+      </S.Wrapper>
+    </>
   )
 }
 
