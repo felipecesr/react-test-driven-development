@@ -25,3 +25,4 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Redirecionando após o envio do formulário
 - Melhorando os eventos do teste
 - Gerando dados aleatórios para os testes
+- Refatorando os campos e adicionando estilos

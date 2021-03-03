@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import FormItem from 'components/FormItem/FormItem'
+import * as S from './styles'
 
 const Form = () => {
   const [isSaving, setIsSaving] = useState(false)
@@ -27,20 +29,16 @@ const Form = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor='description-input'>Description</label>
-      <input type='text' id='description-input' name='description' />
-
-      <label htmlFor='value-input'>Value</label>
-      <input type='text' id='value-input' name='value' />
-
-      <label htmlFor='paid-input'>Paid</label>
-      <input type='checkbox' id='paid-input' name='paid' />
-
-      <button type='submit' disabled={isSaving}>
-        Submit
-      </button>
-    </form>
+    <S.Wrapper>
+      <form onSubmit={handleSubmit}>
+        <FormItem label='Description' name='description' />
+        <FormItem label='Value' name='value' />
+        <FormItem label='Paid' name='paid' type='checkbox' />
+        <button type='submit' disabled={isSaving}>
+          Submit
+        </button>
+      </form>
+    </S.Wrapper>
   )
 }
 
