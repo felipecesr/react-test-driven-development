@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   display: flex;
-  text-align: center;
+  text-align: left;
   flex-direction: column;
   margin-bottom: 2%;
 `

@@ -13,9 +13,8 @@ export const Wrapper = styled.li`
 `
 
 export const Title = styled.h2`
-  flex-basis: 15%;
-  font-weight: bold;
-  text-align: right;
+  flex-basis: 70%;
+  font-size: 1.2em;
 `
 
 export const Total = styled.span`

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Header from 'components/Header/Header'
 import ListItem from 'components/ListItem/ListItem'
+import * as S from './styles'
 
 const Home = ({ history }) => {
   const [items, setItems] = useState([])
@@ -24,7 +25,7 @@ const Home = ({ history }) => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <ul>
+        <S.List>
           {items.map(item => (
             <ListItem
               key={item._id}
@@ -33,7 +34,7 @@ const Home = ({ history }) => {
               price={item.price}
             />
           ))}
-        </ul>
+        </S.List>
       )}
     </>
   )
