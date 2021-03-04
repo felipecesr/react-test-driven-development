@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Redirect as MockRedirect } from 'react-router-dom'
-import { expenseBuilder } from 'utils/test-data'
+import { itemBuilder } from 'utils/test-data'
 import Form from '../Form'
 
 jest.mock('react-router-dom', () => {
@@ -10,28 +10,31 @@ jest.mock('react-router-dom', () => {
   }
 })
 
-test('renders a form with description, value, paid and a submit button', async () => {
+test('renders a form with title, quantity, price and a submit button', async () => {
   jest.spyOn(window, 'fetch')
   window.fetch.mockResolvedValue()
   MockRedirect.mockImplementation(() => null)
-  const fakeExpense = expenseBuilder()
+  const fakeItem = itemBuilder()
 
   render(<Form />)
 
-  userEvent.type(screen.getByLabelText(/description/i), fakeExpense.text)
-  userEvent.type(screen.getByLabelText(/value/i), fakeExpense.value)
-  userEvent.click(screen.getByLabelText(/paid/i))
-  const buttonElement = screen.getByRole('button', { name: /submit/i })
+  userEvent.type(screen.getByLabelText(/title/i), fakeItem.title)
+  userEvent.type(
+    screen.getByLabelText(/quantity/i),
+    fakeItem.quantity.toString()
+  )
+  userEvent.type(screen.getByLabelText(/price/i), fakeItem.price.toString())
+  const buttonElement = screen.getByRole('button', { name: /add item/i })
 
   userEvent.click(buttonElement)
   expect(buttonElement).toBeDisabled()
 
-  expect(window.fetch).toHaveBeenCalledWith('/api/save-expense', {
+  expect(window.fetch).toHaveBeenCalledWith('/api/save-item', {
     method: 'POST',
     body: JSON.stringify({
-      text: fakeExpense.text,
-      value: fakeExpense.value,
-      paid: true
+      title: fakeItem.title,
+      quantity: fakeItem.quantity,
+      price: fakeItem.price
     })
   })
   expect(window.fetch).toHaveBeenCalledTimes(1)

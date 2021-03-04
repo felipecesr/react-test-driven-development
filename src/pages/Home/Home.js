@@ -8,7 +8,7 @@ const Home = ({ history }) => {
 
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await window.fetch('/api/expenses')
+      const response = await window.fetch('/api/items')
       const data = await response.json()
 
       setItems(data)
@@ -20,7 +20,7 @@ const Home = ({ history }) => {
 
   return (
     <>
-      <Header title='My List' openForm={() => history.push('new')} />
+      <Header title='My Shopping List' openForm={() => history.push('new')} />
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -28,10 +28,9 @@ const Home = ({ history }) => {
           {items.map(item => (
             <ListItem
               key={item._id}
-              label={item.text}
-              name={item.text}
-              value={45.9}
-              isPaid={item.paid}
+              title={item.title}
+              quantity={item.quantity}
+              price={item.price}
             />
           ))}
         </ul>

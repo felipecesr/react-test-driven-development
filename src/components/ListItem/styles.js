@@ -2,15 +2,24 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.li`
   display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  text-align: left;
+  align-items: center;
+  padding: 1%;
   background-color: lightgray;
   border-radius: 5px;
-  margin-bottom: 1em;
+  padding: 10px;
+  margin-bottom: 2%;
+  text-decoration: none;
 `
 
-export const Label = styled.label`
-  input:checked + & {
-    text-decoration: line-through;
-  }
+export const Title = styled.h2`
+  flex-basis: 15%;
+  font-weight: bold;
+  text-align: right;
+`
+
+export const Total = styled.span`
+  flex-basis: 15%;
+  font-weight: bold;
+  text-align: right;
 `

@@ -1,22 +1,22 @@
 const sendQuery = require('./utils/send-query')
 
-const CREATE_EXPENSE = `
-  mutation($text: String!, $value: Float!, $paid: Boolean!) {
-    createExpense(data: { text: $text, value: $value, paid: $paid }) {
+const CREATE_ITEM = `
+  mutation($title: String!, $quantity: Int!, $price: Float!) {
+    createItem(data: { title: $title, quantity: $quantity, price: $price }) {
       _id
-      text
-      value
-      paid
+      title
+      quantity
+      price
     }
   }
 `
 
 exports.handler = async event => {
   const values = JSON.parse(event.body)
-  const { data, errors } = await sendQuery(CREATE_EXPENSE, {
-    text: values.text,
-    value: Number(values.value),
-    paid: values.paid
+  const { data, errors } = await sendQuery(CREATE_ITEM, {
+    title: values.title,
+    quantity: values.quantity,
+    price: values.price
   })
 
   if (errors) {

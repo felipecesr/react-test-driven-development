@@ -1,9 +1,9 @@
-type Expense {
-  text: String
-  value: Float
-  paid: Boolean
+type Item {
+  title: String
+  quantity: Int
+  price: Float
 }
 
 type Query {
-  allExpenses: [Expense!]!
+  allItems: [Item!]!
 }

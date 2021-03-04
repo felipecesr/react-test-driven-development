@@ -12,14 +12,14 @@ const Form = ({ history }) => {
     e.preventDefault()
     setIsSaving(true)
 
-    const { description, value, paid } = e.target.elements
+    const { title, quantity, price } = e.target.elements
     window
-      .fetch('/api/save-expense', {
+      .fetch('/api/save-item', {
         method: 'POST',
         body: JSON.stringify({
-          text: description.value,
-          value: value.value,
-          paid: paid.checked
+          title: title.value,
+          quantity: Number(quantity.value),
+          price: Number(price.value)
         })
       })
       .then(() => setRedirect(true))
@@ -34,11 +34,11 @@ const Form = ({ history }) => {
       <Header title='Add New' goBack={() => history.goBack()} />
       <S.Wrapper>
         <form onSubmit={handleSubmit}>
-          <FormItem label='Description' name='description' />
-          <FormItem label='Value' name='value' />
-          <FormItem label='Paid' name='paid' type='checkbox' />
+          <FormItem label='Title' name='title' />
+          <FormItem label='Quantity' name='quantity' />
+          <FormItem label='Price' name='price' />
           <S.SubmitButton type='submit' disabled={isSaving}>
-            Submit
+            Add Item
           </S.SubmitButton>
         </form>
       </S.Wrapper>

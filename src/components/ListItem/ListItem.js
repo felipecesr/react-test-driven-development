@@ -1,13 +1,10 @@
-import { formatReal } from 'utils/format-real'
 import * as S from './styles'
 
-const ListItem = ({ name, label, value, isPaid }) => (
+const ListItem = ({ title, quantity, price }) => (
   <S.Wrapper>
-    <div>
-      <input type='checkbox' id={name} name={name} checked={isPaid} readOnly />
-      <S.Label htmlFor={name}>{label}</S.Label>
-    </div>
-    <span>R$ {formatReal(value)}</span>
+    <S.Title>{title}</S.Title>
+    <S.Total>Quantity: {quantity}</S.Total>
+    <S.Total>$ {price}</S.Total>
   </S.Wrapper>
 )
 

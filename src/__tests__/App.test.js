@@ -22,7 +22,7 @@ function render(ui, { route = '/', ...renderOptions } = {}) {
 test('app renders add new and go back and I can navigate to those pages', () => {
   render(<App />)
 
-  expect(screen.getByRole('heading')).toHaveTextContent(/my list/i)
+  expect(screen.getByRole('heading')).toHaveTextContent(/my.*list/i)
 
   userEvent.click(screen.getByRole('button', { name: /add new/i }))
 
@@ -33,7 +33,7 @@ test('app renders add new and go back and I can navigate to those pages', () => 
 
   userEvent.click(screen.getByRole('button', { name: /go back/i }))
 
-  expect(screen.getByRole('heading')).toHaveTextContent(/my list/i)
+  expect(screen.getByRole('heading')).toHaveTextContent(/my.*list/i)
   expect(
     screen.queryByRole('button', { name: /go back/i })
   ).not.toBeInTheDocument()

@@ -1,20 +1,20 @@
 const sendQuery = require('./utils/send-query')
 
-const GET_ALL_EXPENSES = `
+const GET_ALL_ITEMS = `
   query {
-    allExpenses {
+    allItems {
       data {
         _id
-        text
-        value
-        paid
+        title
+        quantity
+        price
       }
     }
   }
 `
 
 exports.handler = async () => {
-  const { data, errors } = await sendQuery(GET_ALL_EXPENSES)
+  const { data, errors } = await sendQuery(GET_ALL_ITEMS)
 
   if (errors) {
     return {
@@ -25,6 +25,6 @@ exports.handler = async () => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(data.allExpenses.data)
+    body: JSON.stringify(data.allItems.data)
   }
 }
