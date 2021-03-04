@@ -1,18 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Redirect as MockRedirect } from 'react-router-dom'
-import { build, fake } from 'test-data-bot'
+import { expenseBuilder } from 'utils/test-data'
 import Form from '../Form'
 
 jest.mock('react-router-dom', () => {
   return {
     Redirect: jest.fn()
   }
-})
-
-const expenseBuilder = build('Expense').fields({
-  text: fake(f => f.lorem.word()),
-  value: fake(f => f.random.number()).toString()
 })
 
 test('renders a form with description, value, paid and a submit button', async () => {
