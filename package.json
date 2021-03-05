@@ -52,5 +52,15 @@
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "test-data-bot": "^0.8.0"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
