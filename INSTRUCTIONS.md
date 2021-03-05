@@ -1,88 +1,82 @@
-# Testando um erro na requisição
+# Adicionando Redux + Redux Saga no fluxo da Home
 
-Adicione mais um teste no `Home.test.js`.
+Adiciona packages
 
-Lembre-se que precisamos mockar o `fetch` novamente só que nesse caso retorna um erro.
-
-```javascript
-test('renders an error message when the list fails to load', async () => {
-  jest.spyOn(window, 'fetch')
-
-  window.fetch.mockImplementation(() => ({
-    ok: false,
-    json: async () => [{ message: 'An error has occured' }]
-  }))
-
-  render(<Home />)
-
-  await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
-
-  expect(window.fetch).toBeCalledWith('/api/items')
-  expect(window.fetch).toBeCalledTimes(1)
-
-  expect(screen.getByText(/an error has occured/i)).toBeInTheDocument()
-})
+```bash
+yarn add redux react-redux redux-saga
 ```
 
-## Fazendo o teste passar
+Adiciona `reducer.js`
 
-No `Home.js` podemos adicionar mais um state
+Adiciona `sagas.js`
+
+Adiciona `index.js`
+
+Adiciona o `Provider` no `App.js`
 
 ```javascript
-const [error, setError] = useState(null)
+import store from 'store'
 
-useEffect(() => {
-  const fetchItems = async () => {
-    const response = await window.fetch('/api/items')
-    const data = await response.json()
+function App() {
+  return (
+    <>
+      <GlobalStyles />
+      <Provider store={store}>
+        <Switch>...</Switch>
+      </Provider>
+    </>
+  )
+}
+```
 
-    if (!response.ok) {
-      setError(data[0])
-    } else {
-      setItems(data)
-    }
+Adicionar o Redux na Home
 
-    seIsLoading(false)
+Vamos refatorar a Home para utilizar os dados do Redux, não vou começar pelos teste porque o funcionamento da página não deve mudar, é uma refatoração.
+
+```javascript
+import { useSelector, useDispatch } from 'react-redux'
+
+const Home = ({ history }) => {
+  const { loading, items, error } = useSelector(state => state)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch({ type: 'GET_ITEMS_REQUEST' })
+  }, [dispatch])
+```
+
+Se executarmos a aplicação ela funciona, mas o teste não.
+
+Isso acontece porque não renderizamos a Home com o `Provider`.
+
+Sempre que uma página tiver um context, ele tem que ser renderizado no teste.
+
+Para fazer isso, vamos precisar mockar a store, criar uma store para os testes.
+
+```javascript
+// Home.test.js
+const initialState = {
+  loading: true,
+  items: null,
+  error: null
+}
+
+function renderWithStore(ui, { initialState, ...renderOptions } = {}) {
+  const sagaMiddleware = createSagaMiddleware()
+  const store = createStore(
+    reducer,
+    initialState,
+    applyMiddleware(sagaMiddleware)
+  )
+
+  sagaMiddleware.run(rootSaga)
+
+  function Wrapper({ children }) {
+    return <Provider store={store}>{children}</Provider>
   }
 
-  fetchItems()
-}, [])
-
-return (
-  <>
-    <Header title='My Shopping List' openForm={() => history.push('new')} />
-    {isLoading ? (
-      <div>Loading...</div>
-    ) : error ? (
-      <div>{error.message}</div>
-    ) : (
-      <S.List>
+  return render(ui, { wrapper: Wrapper, ...renderOptions })
+}
 ```
 
-## Refatorando
-
-Também podemos fazer dessa forma
-
-```diff
-- await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
-...
-+ expect(await screen.findByText(/an error has occured/i)).toBeInTheDocument()
-```
-
-Remover o `spyOn` de cada teste e mover para um `beforeEach`
-
-```javascript
-beforeEach(() => jest.spyOn(window, 'fetch'))
-```
-
-Também podemos deixar essas mensagens de erro em uma só div
-
-```javascript
-const [items, setItems] = useState(null)
-
-...
-
-<div>{isLoading ? 'Loading...' : error ? error.message : ''}</div>
-{items && (
-  ...
-```
+Note que os testes voltaram a passar e com alta cobertura.

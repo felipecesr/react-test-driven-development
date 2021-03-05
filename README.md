@@ -32,9 +32,12 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Página 404
 - Listando os dados na Home
 - Testando um erro na requisição
+- Adicionando Redux + Redux Saga na Home
 
 # Seção 5: Adicionando
 
-- Redux + Redux Saga
 - Formik
 - Jest Styled Components
+
+Configurar o Jest
+Jest in Case
