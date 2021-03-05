@@ -16,7 +16,6 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Refatorando os testes
 - React Testing Library
 - Dublês de teste
-- Styled Components
 
 ## Seção 3: TDD em um Formulário
 
@@ -32,3 +31,10 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Adicionando a navegação
 - Página 404
 - Listando os dados na Home
+- Testando um erro na requisição
+
+# Seção 5: Adicionando
+
+- Redux + Redux Saga
+- Formik
+- Jest Styled Components

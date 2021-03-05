@@ -6,13 +6,19 @@ import * as S from './styles'
 const Home = ({ history }) => {
   const [items, setItems] = useState([])
   const [isLoading, seIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchItems = async () => {
       const response = await window.fetch('/api/items')
       const data = await response.json()
 
-      setItems(data)
+      if (!response.ok) {
+        setError(data[0])
+      } else {
+        setItems(data)
+      }
+
       seIsLoading(false)
     }
 
@@ -22,9 +28,8 @@ const Home = ({ history }) => {
   return (
     <>
       <Header title='My Shopping List' openForm={() => history.push('new')} />
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      <div>{isLoading ? 'Loading...' : error ? error.message : ''}</div>
+      {items.length && (
         <S.List>
           {items.map(item => (
             <ListItem

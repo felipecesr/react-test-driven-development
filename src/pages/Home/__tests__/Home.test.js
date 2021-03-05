@@ -7,9 +7,9 @@ import {
 import { itemBuilder } from 'utils/test-data'
 import Home from '../Home'
 
-test('shows the loading text and then renders a list', async () => {
-  jest.spyOn(window, 'fetch')
+beforeEach(() => jest.spyOn(window, 'fetch'))
 
+test('shows the loading text and then renders a list', async () => {
   const mockResolvedValues = Array.from({ length: 3 }, itemBuilder)
 
   window.fetch.mockImplementation(() => ({
@@ -33,4 +33,18 @@ test('shows the loading text and then renders a list', async () => {
       mockResolvedValues[index].title
     )
   })
+})
+
+test('renders an error message when the list fails to load', async () => {
+  window.fetch.mockImplementation(() => ({
+    ok: false,
+    json: async () => [{ message: 'An error has occured' }]
+  }))
+
+  render(<Home />)
+
+  expect(window.fetch).toBeCalledWith('/api/items')
+  expect(window.fetch).toBeCalledTimes(1)
+
+  expect(await screen.findByText(/an error has occured/i)).toBeInTheDocument()
 })
