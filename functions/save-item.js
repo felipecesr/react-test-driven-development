@@ -13,11 +13,7 @@ const CREATE_ITEM = `
 
 exports.handler = async event => {
   const values = JSON.parse(event.body)
-  const { data, errors } = await sendQuery(CREATE_ITEM, {
-    title: values.title,
-    quantity: values.quantity,
-    price: values.price
-  })
+  const { data, errors } = await sendQuery(CREATE_ITEM, values)
 
   if (errors) {
     return {

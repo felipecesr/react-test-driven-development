@@ -27,7 +27,7 @@ test('renders a form with title, quantity, price and a submit button', async () 
   const buttonElement = screen.getByRole('button', { name: /add item/i })
 
   userEvent.click(buttonElement)
-  expect(buttonElement).toBeDisabled()
+  await waitFor(() => expect(buttonElement).toBeDisabled())
 
   expect(window.fetch).toHaveBeenCalledWith('/api/save-item', {
     method: 'POST',
