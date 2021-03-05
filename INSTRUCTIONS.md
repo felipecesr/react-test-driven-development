@@ -78,7 +78,11 @@ beforeEach(() => jest.spyOn(window, 'fetch'))
 Também podemos deixar essas mensagens de erro em uma só div
 
 ```javascript
+const [items, setItems] = useState(null)
+
+...
+
 <div>{isLoading ? 'Loading...' : error ? error.message : ''}</div>
-{items.length && (
+{items && (
   ...
 ```

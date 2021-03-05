@@ -4,7 +4,7 @@ import ListItem from 'components/ListItem/ListItem'
 import * as S from './styles'
 
 const Home = ({ history }) => {
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState(null)
   const [isLoading, seIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -29,7 +29,7 @@ const Home = ({ history }) => {
     <>
       <Header title='My Shopping List' openForm={() => history.push('new')} />
       <div>{isLoading ? 'Loading...' : error ? error.message : ''}</div>
-      {items.length && (
+      {items && (
         <S.List>
           {items.map(item => (
             <ListItem
