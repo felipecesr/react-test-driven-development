@@ -1,6 +1,10 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d0ab933d-5ac4-4efb-a32a-5e8a93e1f3d3/deploy-status)](https://app.netlify.com/sites/ubr-delivery/deploys)
+
 # React Test-Driven Development
 
 Este é o código fonte para o workshop sobre desenvolvimento guiado por testes em aplicações React.
+
+Live site! https://react-test-driven-development.netlify.app
 
 ## Seções
 
@@ -32,9 +36,3 @@ Este é o código fonte para o workshop sobre desenvolvimento guiado por testes 
 - Página 404
 - Listando os dados na Home
 - Testando um erro na requisição
-
-# Seção 5: Adicionando
-
-- Redux + Redux Saga
-- Formik
-- Jest Styled Components
