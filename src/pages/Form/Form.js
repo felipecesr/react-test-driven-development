@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import Header from 'components/Header/Header'
 import FormItem from 'components/FormItem/FormItem'
 import * as S from './styles'
 
-const Form = ({ history }) => {
+const Form = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [redirect, setRedirect] = useState(false)
+  const history = useHistory()
 
   const handleSubmit = e => {
     e.preventDefault()

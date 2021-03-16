@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import Header from 'components/Header/Header'
 import ListItem from 'components/ListItem/ListItem'
 import * as S from './styles'
 
-const Home = ({ history }) => {
+const Home = () => {
   const [items, setItems] = useState(null)
   const [isLoading, seIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const history = useHistory()
 
   useEffect(() => {
     const fetchItems = async () => {

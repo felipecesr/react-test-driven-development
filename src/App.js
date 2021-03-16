@@ -2,19 +2,27 @@ import { Switch, Route } from 'react-router-dom'
 import GlobalStyles from 'styles/global'
 import Home from 'pages/Home/Home'
 import Form from 'pages/Form/Form'
-import Error from 'pages/Error/Error'
+import NoMatch from 'pages/NoMatch/NoMatch'
+import Login from 'pages/Login/Login'
 
-function App() {
-  return (
-    <>
-      <GlobalStyles />
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/new' component={Form} />
-        <Route component={Error} />
-      </Switch>
-    </>
-  )
-}
+const App = () => (
+  <>
+    <GlobalStyles />
+    <Switch>
+      <Route exact path='/'>
+        <Home />
+      </Route>
+      <Route path='/new'>
+        <Form />
+      </Route>
+      <Route path='/login'>
+        <Login />
+      </Route>
+      <Route>
+        <NoMatch />
+      </Route>
+    </Switch>
+  </>
+)
 
 export default App

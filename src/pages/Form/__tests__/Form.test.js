@@ -6,6 +6,7 @@ import Form from '../Form'
 
 jest.mock('react-router-dom', () => {
   return {
+    ...jest.requireActual('react-router-dom'),
     Redirect: jest.fn()
   }
 })
