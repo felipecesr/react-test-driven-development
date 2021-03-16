@@ -1,23 +1,6 @@
-import { render as rtlRender, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { render, screen } from 'utils/test-utils'
 import App from '../App'
-
-function render(ui, { route = '/', ...renderOptions } = {}) {
-  const history = createMemoryHistory({
-    initialEntries: [route]
-  })
-
-  function Wrapper({ children }) {
-    return <Router history={history}>{children}</Router>
-  }
-
-  return rtlRender(<Router history={history}>{ui}</Router>, {
-    wrapper: Wrapper,
-    ...renderOptions
-  })
-}
 
 test('app renders add new and go back and I can navigate to those pages', () => {
   render(<App />)
