@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from 'utils/test-utils'
 import userEvent from '@testing-library/user-event'
 import { Redirect as MockRedirect } from 'react-router-dom'
 import { itemBuilder } from 'utils/test-data'
