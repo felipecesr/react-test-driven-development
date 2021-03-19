@@ -7,7 +7,7 @@ const initialValue = {
     },
     token: '12345'
   },
-  loginUser: jest.fn(),
+  loginUser: () => Promise.resolve(),
   signupUser: jest.fn(),
   logoutUser: jest.fn()
 }

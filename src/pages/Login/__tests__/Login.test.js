@@ -1,7 +1,15 @@
 import userEvent from '@testing-library/user-event'
 import faker from 'faker'
-import { render, screen } from 'utils/test-utils'
+import { Redirect as MockRedirect } from 'react-router-dom'
+import { render, screen, waitFor } from 'utils/test-utils'
 import Login from '../Login'
+
+jest.mock('react-router-dom', () => {
+  return {
+    ...jest.requireActual('react-router-dom'),
+    Redirect: jest.fn()
+  }
+})
 
 function buildLoginForm(overrides) {
   return {
@@ -11,18 +19,16 @@ function buildLoginForm(overrides) {
   }
 }
 
-test('submitting the form calls onSubmit with email and password', () => {
-  const handleSubmit = jest.fn()
-  render(<Login onSubmit={handleSubmit} />)
+test('logging in redirects to the admin', async () => {
+  MockRedirect.mockImplementation(() => null)
+  render(<Login />)
   const { email, password } = buildLoginForm()
 
   userEvent.type(screen.getByLabelText(/email/i), email)
   userEvent.type(screen.getByLabelText(/password/i), password)
   userEvent.click(screen.getByRole('button', { name: /submit/i }))
 
-  expect(handleSubmit).toHaveBeenCalledWith({
-    email,
-    password
-  })
-  expect(handleSubmit).toHaveBeenCalledTimes(1)
+  await waitFor(() =>
+    expect(MockRedirect).toHaveBeenCalledWith({ to: '/new' }, {})
+  )
 })

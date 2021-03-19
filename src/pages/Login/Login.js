@@ -1,12 +1,22 @@
-const Login = ({ onSubmit }) => {
+import { useState } from 'react'
+import { useIdentityContext } from 'react-netlify-identity'
+import { Redirect } from 'react-router-dom'
+
+const Login = () => {
+  const { loginUser } = useIdentityContext()
+  const [redirect, setRedirect] = useState(null)
+
   function handleSubmit(e) {
     e.preventDefault()
     const { email, password } = e.target.elements
 
-    onSubmit({
-      email: email.value,
-      password: password.value
+    loginUser(email.value, password.value).then(() => {
+      setRedirect('/new')
     })
+  }
+
+  if (redirect) {
+    return <Redirect to={redirect} />
   }
 
   return (
