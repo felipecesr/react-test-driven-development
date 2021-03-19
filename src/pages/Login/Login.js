@@ -1,62 +1,26 @@
-import { useState, useEffect, useRef } from 'react'
-import { useIdentityContext } from 'react-netlify-identity'
-import { useHistory } from 'react-router-dom'
+const Login = ({ onSubmit }) => {
+  function handleSubmit(e) {
+    e.preventDefault()
+    const { email, password } = e.target.elements
 
-const Login = () => {
-  const { user, loginUser, signupUser } = useIdentityContext()
-  const formRef = useRef()
-  const [msg, setMsg] = useState('')
-  const history = useHistory()
-
-  useEffect(() => {
-    if (user) {
-      history.push('/')
-    }
-  }, [user, history])
-
-  const signup = () => {
-    const email = formRef.current.email.value
-    const password = formRef.current.password.value
-
-    signupUser(email, password)
-      .then(user => {
-        console.log('Success! Signed up', user)
-        history.push('/')
-      })
-      .catch(err => console.error(err) || setMsg('Error: ' + err.message))
+    onSubmit({
+      email: email.value,
+      password: password.value
+    })
   }
 
   return (
-    <form
-      ref={formRef}
-      onSubmit={e => {
-        e.preventDefault()
-        const email = e.target.email.value
-        const password = e.target.password.value
-        loginUser(email, password, true)
-          .then(user => {
-            console.log('Success! Logged in', user)
-            history.push('/')
-          })
-          .catch(err => console.error(err) || setMsg('Error: ' + err.message))
-      }}
-    >
+    <form onSubmit={handleSubmit}>
       <div>
-        <label>
-          Email:
-          <input type='email' name='email' />
-        </label>
+        <label htmlFor='email-field'>Email</label>
+        <input id='email-field' type='email' name='email' />
       </div>
       <div>
-        <label>
-          Password:
-          <input type='password' name='password' />
-        </label>
+        <label htmlFor='password-field'>Password:</label>
+        <input id='password-field' type='password' name='password' />
       </div>
       <div>
-        <input type='submit' value='Log in' />
-        <button onClick={signup}>Sign Up </button>
-        {msg && <pre>{msg}</pre>}
+        <button type='submit'>Submit</button>
       </div>
     </form>
   )

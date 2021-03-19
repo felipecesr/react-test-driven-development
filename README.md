@@ -40,3 +40,7 @@ Live site! https://react-test-driven-development.netlify.app
 ## Seção 5: Boas Práticas
 
 - Render Test Utils
+
+## Seção 6: Formulário de Login
+
+- Build Pattern
