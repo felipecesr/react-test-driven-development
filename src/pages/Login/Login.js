@@ -4,19 +4,19 @@ import { Redirect } from 'react-router-dom'
 
 const Login = () => {
   const { loginUser } = useIdentityContext()
-  const [redirect, setRedirect] = useState(null)
+  const [redirect, setRedirect] = useState(false)
 
   function handleSubmit(e) {
     e.preventDefault()
     const { email, password } = e.target.elements
 
     loginUser(email.value, password.value).then(() => {
-      setRedirect('/new')
+      setRedirect(true)
     })
   }
 
   if (redirect) {
-    return <Redirect to={redirect} />
+    return <Redirect to='/new' />
   }
 
   return (
