@@ -30,7 +30,9 @@ const Home = () => {
   return (
     <>
       <Header title='My Shopping List' openForm={() => history.push('new')} />
-      <div>{isLoading ? 'Loading...' : error ? error.message : ''}</div>
+      <div role='alert'>
+        {isLoading ? 'Loading...' : error ? error.message : ''}
+      </div>
       {items && (
         <S.List>
           {items.map(item => (

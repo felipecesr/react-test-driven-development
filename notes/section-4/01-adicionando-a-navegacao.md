@@ -1,4 +1,8 @@
-# Adicionando a navegação
+# Testes de Integração
+
+Renderizar o App da mesma forma que é renderizado em production
+
+## Adicionando a navegação
 
 Como vamos testar a navegação do app, precisamos adicionar o `react-router` na aplicação.
 

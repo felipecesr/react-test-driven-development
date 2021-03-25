@@ -44,3 +44,4 @@ Live site! https://react-test-driven-development.netlify.app
 ## Seção 6: Formulário de Login
 
 - Build Pattern
+- MSW
