@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useAuth } from 'context/AuthContext'
+import Header from 'components/Header/Header'
+import FormItem from 'components/FormItem/FormItem'
+import * as S from '../Form/styles'
 
 const Login = () => {
   const { auth, setAuthState } = useAuth()
   const [isSaving, setIsSaving] = useState(false)
   const [redirect, setRedirect] = useState(false)
   const [error, setError] = useState(null)
+  const history = useHistory()
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -34,22 +39,19 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor='username-field'>Username</label>
-        <input id='username-field' type='text' name='username' />
-      </div>
-      <div>
-        <label htmlFor='password-field'>Password:</label>
-        <input id='password-field' type='password' name='password' />
-      </div>
-      <div>
-        <button type='submit' disabled={isSaving}>
-          Submit
-        </button>
-      </div>
-      {error ? <div role='alert'>{error}</div> : null}
-    </form>
+    <>
+      <Header title='Login' goBack={() => history.push('/')} />
+      <S.Wrapper>
+        <form onSubmit={handleSubmit}>
+          <FormItem label='Username' name='username' />
+          <FormItem label='Password' name='password' type='password' />
+          <S.SubmitButton type='submit' disabled={isSaving}>
+            Submit
+          </S.SubmitButton>
+          {error ? <div role='alert'>{error}</div> : null}
+        </form>
+      </S.Wrapper>
+    </>
   )
 }
 

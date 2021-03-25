@@ -1,21 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Redirect, useHistory } from 'react-router-dom'
-import { useAuth } from 'context/AuthContext'
 import Header from 'components/Header/Header'
 import FormItem from 'components/FormItem/FormItem'
 import * as S from './styles'
 
 const Form = () => {
-  const { authState } = useAuth()
   const [isSaving, setIsSaving] = useState(false)
   const [redirect, setRedirect] = useState(false)
   const history = useHistory()
-
-  // useEffect(() => {
-  //   if (!user || !user.token) {
-  //     history.push('/login')
-  //   }
-  // }, [user, history])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -41,12 +33,6 @@ const Form = () => {
   return (
     <>
       <Header title='Add New' goBack={() => history.push('/')} />
-      {authState?.userInfo?.full_name && (
-        <>
-          <div>Hello {authState.userInfo.full_name}</div>
-          {/* <button onClick={() => logoutUser()}>Log Out</button> */}
-        </>
-      )}
       <S.Wrapper>
         <form onSubmit={handleSubmit}>
           <FormItem label='Title' name='title' />

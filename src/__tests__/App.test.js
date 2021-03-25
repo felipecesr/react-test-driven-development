@@ -26,3 +26,16 @@ test('renders not found page for unknown urls', () => {
   render(<App />, { route: '/something-not-found' })
   expect(screen.getByRole('heading')).toHaveTextContent(/404/i)
 })
+
+test('can navigate to the home page', () => {
+  render(<App />, { route: '/login' })
+
+  expect(screen.getByRole('heading')).toHaveTextContent(/login/i)
+
+  userEvent.click(screen.getByRole('button', { name: /go back/i }))
+
+  expect(screen.getByRole('heading')).toHaveTextContent(/my.*list/i)
+  expect(
+    screen.queryByRole('button', { name: /go back/i })
+  ).not.toBeInTheDocument()
+})
