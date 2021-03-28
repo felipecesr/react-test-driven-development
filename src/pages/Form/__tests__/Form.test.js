@@ -1,9 +1,14 @@
-import { render, screen, waitFor } from 'utils/test-utils'
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved
+} from 'utils/test-utils'
 import userEvent from '@testing-library/user-event'
 import { Redirect as MockRedirect } from 'react-router-dom'
-import faker from 'faker'
 import { itemBuilder, userBuilder } from 'utils/generate'
-import App from '../../../App'
+import * as auth from 'authProvider'
+import App from 'App'
 
 jest.mock('react-router-dom', () => {
   return {
@@ -12,19 +17,24 @@ jest.mock('react-router-dom', () => {
   }
 })
 
-// afterEach(async () => {
-//   await auth.logout()
-// })
+afterEach(() => {
+  auth.logout()
+})
 
 test('renders a form with title, quantity, price and a submit button', async () => {
   const fakeUser = userBuilder()
   const fakeItem = itemBuilder()
 
+  const currentDate = new Date()
+  currentDate.setFullYear(currentDate.getFullYear() + 1)
+
   window.localStorage.setItem('userInfo', JSON.stringify(fakeUser))
-  window.localStorage.setItem('expiresAt', faker.random.number())
+  window.localStorage.setItem('expiresAt', currentDate / 1000)
   window.localStorage.setItem('token', 'SOME_FAKE_TOKEN')
 
   render(<App />, { route: '/new' })
+
+  await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
 
   userEvent.type(screen.getByLabelText(/title/i), fakeItem.title)
   userEvent.type(

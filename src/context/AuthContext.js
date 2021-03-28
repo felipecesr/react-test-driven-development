@@ -1,13 +1,9 @@
 import { createContext, useContext, useState } from 'react'
-import GoTrue from 'gotrue-js'
-
-const auth = new GoTrue({
-  APIUrl: process.env.REACT_APP_API_URL,
-  audience: '',
-  setCookie: false
-})
+import { useHistory } from 'react-router-dom'
+import * as auth from 'authProvider'
 
 const AuthContext = createContext()
+AuthContext.displayName = 'AuthContext'
 
 const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState(() => {
@@ -21,6 +17,7 @@ const AuthProvider = ({ children }) => {
       userInfo: userInfo ? JSON.parse(userInfo) : {}
     }
   })
+  const history = useHistory()
 
   const setAuthInfo = ({ token, expiresAt, userInfo }) => {
     localStorage.setItem('token', token)
@@ -32,6 +29,30 @@ const AuthProvider = ({ children }) => {
       expiresAt,
       userInfo
     })
+  }
+
+  const login = async form => {
+    try {
+      const token = await auth.getToken(form)
+      const user = await auth.getUser(token)
+
+      setAuthInfo(user)
+    } catch (e) {
+      console.log({ e })
+      throw new Error('some error')
+    }
+  }
+
+  const logout = () => {
+    auth.logout()
+
+    setAuthState({
+      token: null,
+      expiresAt: null,
+      userInfo: {}
+    })
+
+    history.push('/')
   }
 
   const isAuthenticated = () => {
@@ -46,7 +67,9 @@ const AuthProvider = ({ children }) => {
     auth,
     authState,
     setAuthState: authInfo => setAuthInfo(authInfo),
-    isAuthenticated
+    isAuthenticated,
+    login,
+    logout
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
