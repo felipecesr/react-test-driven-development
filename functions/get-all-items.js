@@ -1,4 +1,4 @@
-const { ddbDocClient } = require('./utils/dbclient')
+const ddbDocClient = () => null
 
 exports.handler = async () => {
   // const { user } = context.clientContext
