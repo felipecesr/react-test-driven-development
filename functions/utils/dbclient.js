@@ -1,8 +1,8 @@
 require('dotenv').config()
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
+const { DynamoDB } = require('@aws-sdk/client-dynamodb')
 const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb')
 
-const dbclient = new DynamoDBClient({
+const dbclient = new DynamoDB({
   region: process.env.MY_AWS_REGION,
   credentials: {
     accessKeyId: process.env.MY_AWS_ACCESS_KEY_ID,
