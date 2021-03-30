@@ -1,5 +1,5 @@
 require('dotenv').config()
-const DynamoDBClient = require('@aws-sdk/client-dynamodb/dist/cjs/DynamoDBClient')
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
 const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb')
 
 const dbclient = new DynamoDBClient({
