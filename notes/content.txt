@@ -1,0 +1,21 @@
+TODO APP
+
+Introdução a testes (TDD...)
+
+Tipos de teste
+
+Testes Estáticos
+
+Testes unitários (ListItem)
+
+Mocks (ListItem checkbox)
+
+Testing Library
+
+Testes de Integração (List)
+
+Gerando dados automaticamente para os testes
+
+Formulário (Form)
+
+Stop mock fetch (MSW)

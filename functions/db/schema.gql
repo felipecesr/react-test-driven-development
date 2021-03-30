@@ -1,9 +1,0 @@
-type Item {
-  title: String
-  quantity: Int
-  price: Float
-}
-
-type Query {
-  allItems: [Item!]!
-}

@@ -36,3 +36,12 @@ Live site! https://react-test-driven-development.netlify.app
 - Página 404
 - Listando os dados na Home
 - Testando um erro na requisição
+
+## Seção 5: Boas Práticas
+
+- Render Test Utils
+
+## Seção 6: Formulário de Login
+
+- Build Pattern
+- MSW

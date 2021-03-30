@@ -1,25 +1,40 @@
-import { render as rtlRender, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
+import { render, screen, waitForElementToBeRemoved } from 'utils/test-utils'
+import { userBuilder } from 'utils/generate'
+import * as auth from 'authProvider'
 import App from '../App'
 
-function render(ui, { route = '/', ...renderOptions } = {}) {
-  const history = createMemoryHistory({
-    initialEntries: [route]
-  })
+afterEach(() => {
+  auth.logout()
+})
 
-  function Wrapper({ children }) {
-    return <Router history={history}>{children}</Router>
-  }
+test('renders the username and logout button and redirects to login page when logged out', async () => {
+  const fakeUser = userBuilder()
+  const currentDate = new Date()
+  currentDate.setFullYear(currentDate.getFullYear() + 1)
+  window.localStorage.setItem('userInfo', JSON.stringify(fakeUser))
+  window.localStorage.setItem('expiresAt', currentDate / 1000)
+  window.localStorage.setItem('token', 'SOME_FAKE_TOKEN')
 
-  return rtlRender(<Router history={history}>{ui}</Router>, {
-    wrapper: Wrapper,
-    ...renderOptions
-  })
-}
+  render(<App />)
+
+  await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
+
+  userEvent.click(screen.getByText(/log out/i))
+
+  await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
+
+  expect(screen.getByRole('heading')).toHaveTextContent(/login/i)
+})
 
 test('app renders add new and go back and I can navigate to those pages', () => {
+  const fakeUser = userBuilder()
+  const currentDate = new Date()
+  currentDate.setFullYear(currentDate.getFullYear() + 1)
+  window.localStorage.setItem('userInfo', JSON.stringify(fakeUser))
+  window.localStorage.setItem('expiresAt', currentDate / 1000)
+  window.localStorage.setItem('token', 'SOME_FAKE_TOKEN')
+
   render(<App />)
 
   expect(screen.getByRole('heading')).toHaveTextContent(/my.*list/i)

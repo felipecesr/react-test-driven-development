@@ -1,22 +1,40 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved
+} from 'utils/test-utils'
 import userEvent from '@testing-library/user-event'
 import { Redirect as MockRedirect } from 'react-router-dom'
-import { itemBuilder } from 'utils/test-data'
-import Form from '../Form'
+import { itemBuilder, userBuilder } from 'utils/generate'
+import * as auth from 'authProvider'
+import App from 'App'
 
 jest.mock('react-router-dom', () => {
   return {
-    Redirect: jest.fn()
+    ...jest.requireActual('react-router-dom'),
+    Redirect: jest.fn(() => null)
   }
 })
 
+afterEach(() => {
+  auth.logout()
+})
+
 test('renders a form with title, quantity, price and a submit button', async () => {
-  jest.spyOn(window, 'fetch')
-  window.fetch.mockResolvedValue()
-  MockRedirect.mockImplementation(() => null)
+  const fakeUser = userBuilder()
   const fakeItem = itemBuilder()
 
-  render(<Form />)
+  const currentDate = new Date()
+  currentDate.setFullYear(currentDate.getFullYear() + 1)
+
+  window.localStorage.setItem('userInfo', JSON.stringify(fakeUser))
+  window.localStorage.setItem('expiresAt', currentDate / 1000)
+  window.localStorage.setItem('token', 'SOME_FAKE_TOKEN')
+
+  render(<App />, { route: '/new' })
+
+  await waitForElementToBeRemoved(() => screen.getByText(/loading/i))
 
   userEvent.type(screen.getByLabelText(/title/i), fakeItem.title)
   userEvent.type(
@@ -24,21 +42,11 @@ test('renders a form with title, quantity, price and a submit button', async () 
     fakeItem.quantity.toString()
   )
   userEvent.type(screen.getByLabelText(/price/i), fakeItem.price.toString())
-  const buttonElement = screen.getByRole('button', { name: /add item/i })
+  const submitButton = screen.getByRole('button', { name: /add item/i })
 
-  userEvent.click(buttonElement)
-  expect(buttonElement).toBeDisabled()
+  userEvent.click(submitButton)
 
-  expect(window.fetch).toHaveBeenCalledWith('/api/save-item', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: fakeItem.title,
-      quantity: fakeItem.quantity,
-      price: fakeItem.price
-    })
-  })
-  expect(window.fetch).toHaveBeenCalledTimes(1)
-
+  expect(submitButton).toBeDisabled()
   await waitFor(() =>
     expect(MockRedirect).toHaveBeenCalledWith({ to: '/' }, {})
   )

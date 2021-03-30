@@ -1,18 +1,22 @@
-import { Switch, Route } from 'react-router-dom'
+import React from 'react'
 import GlobalStyles from 'styles/global'
-import Home from 'pages/Home/Home'
-import Form from 'pages/Form/Form'
-import NoMatch from 'pages/NoMatch/NoMatch'
+import { useAuth } from 'context/AuthContext'
 
-function App() {
+const AuthenticatedApp = React.lazy(() => import('./AuthenticatedApp'))
+const UnauthenticatedApp = React.lazy(() => import('./UnauthenticatedApp'))
+
+function Spinner() {
+  return <div>Loading</div>
+}
+
+const App = () => {
+  const { isAuthenticated } = useAuth()
   return (
     <>
       <GlobalStyles />
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/new' component={Form} />
-        <Route component={NoMatch} />
-      </Switch>
+      <React.Suspense fallback={<Spinner />}>
+        {isAuthenticated() ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      </React.Suspense>
     </>
   )
 }
