@@ -1,6 +1,6 @@
 require('dotenv').config()
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
-// const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb')
+const DynamoDBClient = require('@aws-sdk/client-dynamodb/dist/cjs/DynamoDBClient')
+const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb')
 
 const dbclient = new DynamoDBClient({
   region: process.env.MY_AWS_REGION,
@@ -10,6 +10,6 @@ const dbclient = new DynamoDBClient({
   }
 })
 
-// const ddbDocClient = DynamoDBDocument.from(dbclient)
+const ddbDocClient = DynamoDBDocument.from(dbclient)
 
-module.exports = { ddbDocClient: dbclient }
+module.exports = { ddbDocClient }
