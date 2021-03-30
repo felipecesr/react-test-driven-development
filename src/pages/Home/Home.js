@@ -17,7 +17,9 @@ const Home = () => {
       const response = await window.fetch('/api/get-all-items', {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${authState.token}`
+          Authorization: authState?.token
+            ? `Bearer ${authState.token}`
+            : undefined
         }
       })
       const data = await response.json()

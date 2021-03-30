@@ -20,7 +20,9 @@ const Form = () => {
       .fetch('/api/post-item', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${authState.token}`
+          Authorization: authState?.token
+            ? `Bearer ${authState.token}`
+            : undefined
         },
         body: JSON.stringify({
           title: title.value,
