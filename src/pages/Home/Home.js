@@ -34,7 +34,7 @@ const Home = () => {
     }
 
     fetchItems()
-  }, [])
+  }, [authState.token])
 
   return (
     <>
