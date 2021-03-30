@@ -1,11 +1,4 @@
-require('dotenv').config()
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
-const { DynamoDBDocument } = require('@aws-sdk/lib-dynamodb')
-
-const REGION = 'us-east-1'
-
-const dbclient = new DynamoDBClient({ region: REGION })
-const ddbDocClient = DynamoDBDocument.from(dbclient)
+const { ddbDocClient } = require('./dbclient')
 
 exports.handler = async (event, context) => {
   const { user } = context.clientContext
