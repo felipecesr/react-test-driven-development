@@ -1,20 +1,20 @@
-const { ddbDocClient } = require('../utils/dbclient')
+const { ddbDocClient } = require('./utils/dbclient')
 
-exports.handler = async (event, context) => {
-  const { user } = context.clientContext
+exports.handler = async () => {
+  // const { user } = context.clientContext
 
-  if (!user) {
-    return {
-      statusCode: 401,
-      body: 'Not Authorized'
-    }
-  }
+  // if (!user) {
+  //   return {
+  //     statusCode: 401,
+  //     body: 'Not Authorized'
+  //   }
+  // }
 
   const params = {
     TableName: 'shopping',
     KeyConditionExpression: 'pk = :userid and begins_with(sk, :todokey)',
     ExpressionAttributeValues: {
-      ':userid': user.sub,
+      // ':userid': user.sub,
       ':todokey': 'todo#'
     }
   }
