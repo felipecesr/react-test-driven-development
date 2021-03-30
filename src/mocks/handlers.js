@@ -44,12 +44,12 @@ function refreshTokenGrant(req, res, ctx, refreshToken) {
 // based on https://github.com/netlify/gotrue
 // https://github.com/netlify/gotrue-js
 export const handlers = [
-  rest.get('/api/items', async (req, res, ctx) => {
+  rest.get('/api/get-all-items', async (req, res, ctx) => {
     const mockResolvedValues = Array.from({ length: 3 }, itemBuilder)
     return res(ctx.json(mockResolvedValues))
   }),
 
-  rest.post('/api/save-item', async (req, res, ctx) => {
+  rest.post('/api/post-item', async (req, res, ctx) => {
     return res(
       ctx.json({
         newExpense: {

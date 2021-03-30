@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Header from 'components/Header/Header'
 import ListItem from 'components/ListItem/ListItem'
+import { useAuth } from 'context/AuthContext'
 import * as S from './styles'
 
 const Home = () => {
@@ -9,10 +10,16 @@ const Home = () => {
   const [isLoading, seIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const history = useHistory()
+  const { authState } = useAuth()
 
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await window.fetch('/api/items')
+      const response = await window.fetch('/api/get-all-items', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authState.token}`
+        }
+      })
       const data = await response.json()
 
       if (!response.ok) {
