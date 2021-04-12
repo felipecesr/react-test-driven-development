@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Wrapper = styled.li`
+const Wrapper = styled.li`
   display: flex;
   text-align: left;
   align-items: center;
@@ -12,13 +12,23 @@ export const Wrapper = styled.li`
   text-decoration: none;
 `
 
-export const Title = styled.h2`
+const Title = styled.h2`
   flex-basis: 70%;
   font-size: 1.2em;
 `
 
-export const Total = styled.span`
+const Total = styled.span`
   flex-basis: 15%;
   font-weight: bold;
   text-align: right;
 `
+
+const ListItem = ({ title, quantity, price }) => (
+  <Wrapper>
+    <Title>{title}</Title>
+    <Total>Quantity: {quantity}</Total>
+    <Total>$ {price}</Total>
+  </Wrapper>
+)
+
+export default ListItem

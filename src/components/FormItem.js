@@ -1,19 +1,19 @@
 import styled from 'styled-components'
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   text-align: left;
   flex-direction: column;
   margin-bottom: 2%;
 `
 
-export const Label = styled.label`
+const Label = styled.label`
   display: block;
   font-weight: bold;
   padding: 10px 0;
 `
 
-export const Input = styled.input`
+const Input = styled.input`
   flex-basis: 60%;
   border: 0;
   font-size: inherit;
@@ -21,3 +21,12 @@ export const Input = styled.input`
   padding: 10px;
   border: 1px solid lightgray;
 `
+
+const FormItem = ({ label, name, type = 'text' }) => (
+  <Wrapper>
+    <Label htmlFor={name}>{label}</Label>
+    <Input type={type} id={name} name={name} />
+  </Wrapper>
+)
+
+export default FormItem

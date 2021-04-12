@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useAuth } from 'context/AuthContext'
-import Header from 'components/Header/Header'
-import FormItem from 'components/FormItem/FormItem'
-import * as S from '../Form/styles'
+import Header from 'components/Header'
+import FormItem from 'components/FormItem'
+import { Wrapper, SubmitButton } from './Form'
 
 const Login = () => {
   const { login } = useAuth()
@@ -34,16 +34,16 @@ const Login = () => {
   return (
     <>
       <Header title='Login' />
-      <S.Wrapper>
+      <Wrapper>
         <form onSubmit={handleSubmit}>
           <FormItem label='Username' name='username' />
           <FormItem label='Password' name='password' type='password' />
-          <S.SubmitButton type='submit' disabled={isSaving}>
+          <SubmitButton type='submit' disabled={isSaving}>
             Submit
-          </S.SubmitButton>
+          </SubmitButton>
           {error ? <div role='alert'>{error}</div> : null}
         </form>
-      </S.Wrapper>
+      </Wrapper>
     </>
   )
 }

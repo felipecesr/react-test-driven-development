@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import Header from 'components/Header/Header'
-import ListItem from 'components/ListItem/ListItem'
+import Header from 'components/Header'
+import ListItem from 'components/ListItem'
 import { useAuth } from 'context/AuthContext'
-import * as S from './styles'
+import styled from 'styled-components'
+
+export const List = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 2% 5%;
+`
 
 const Home = () => {
   const [items, setItems] = useState(null)
@@ -43,7 +50,7 @@ const Home = () => {
         {isLoading ? 'Loading...' : error ? error.message : ''}
       </div>
       {items && (
-        <S.List>
+        <List>
           {items.map(item => (
             <ListItem
               key={item._id}
@@ -52,7 +59,7 @@ const Home = () => {
               price={item.price}
             />
           ))}
-        </S.List>
+        </List>
       )}
     </>
   )

@@ -1,9 +1,22 @@
 import { useState } from 'react'
 import { Redirect, useHistory } from 'react-router-dom'
-import Header from 'components/Header/Header'
-import FormItem from 'components/FormItem/FormItem'
+import Header from 'components/Header'
+import FormItem from 'components/FormItem'
 import { useAuth } from 'context/AuthContext'
-import * as S from './styles'
+import styled from 'styled-components'
+import Button from 'components/Button'
+
+export const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin: 2% 5%;
+`
+
+export const SubmitButton = styled(Button)`
+  background-color: blue;
+  margin: 2% 0;
+`
 
 const Form = () => {
   const [isSaving, setIsSaving] = useState(false)
@@ -40,16 +53,16 @@ const Form = () => {
   return (
     <>
       <Header title='Add New' goBack={() => history.push('/')} />
-      <S.Wrapper>
+      <Wrapper>
         <form onSubmit={handleSubmit}>
           <FormItem label='Title' name='title' />
           <FormItem label='Quantity' name='quantity' />
           <FormItem label='Price' name='price' />
-          <S.SubmitButton type='submit' disabled={isSaving}>
+          <SubmitButton type='submit' disabled={isSaving}>
             Add Item
-          </S.SubmitButton>
+          </SubmitButton>
         </form>
-      </S.Wrapper>
+      </Wrapper>
     </>
   )
 }

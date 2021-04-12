@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom'
-import Navigation from 'components/Navigation/Navigation'
-import Home from 'pages/Home/Home'
-import Form from 'pages/Form/Form'
+import Navigation from 'components/Navigation'
+import Home from 'pages/Home'
+import Form from 'pages/Form'
 
 const AuthenticatedApp = () => (
   <>
